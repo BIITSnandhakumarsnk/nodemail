@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 
 // Endpoint to receive user details and send email
 app.post("/sendEmail", (req, res) => {
-  const { first_name, last_name, department, email, phone, message } = req.body;
+  const { first_name, last_name, department, email, phone, message, time } =
+    req.body;
   require("dotenv").config();
   const departmentString = department ? department.join(", ") : "";
   // Create a transporter using SMTP
@@ -34,6 +35,7 @@ app.post("/sendEmail", (req, res) => {
       FirstName: ${first_name}
       LastName:${last_name}
       Department: ${departmentString}
+      PreferredTime: ${time}
       Email: ${email}
       Phone: ${phone}
       Message: ${message}
