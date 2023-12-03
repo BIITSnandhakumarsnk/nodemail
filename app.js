@@ -8,6 +8,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Use body-parser middleware to parse JSON requests
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // or '*' to allow any origin
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+
+  // Pass to next layer of middleware
+  next();
+});
 // Endpoint to receive user details and send email
 app.post("/sendEmail", (req, res) => {
   const { first_name, last_name, department, email, phone, message, time } =
@@ -49,7 +61,7 @@ app.post("/sendEmail", (req, res) => {
       res.status(500).send("Internal Server Error");
     } else {
       console.log("Email sent: " + info.response);
-      res.status(200).send("Email sent successfully");
+      res.status(200).send({ message: "Email sent successfully" });
     }
   });
 });
